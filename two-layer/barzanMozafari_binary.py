@@ -1,13 +1,15 @@
-import binary
-import initGround
-import initTable
-
+import caculate
+import tans2csv
 
 def main():
-    votes = initTable.init_wta("./dataset/barzanMozafari_binary/labels.txt")
-    ground_list = initGround.init("./dataset/barzanMozafari_binary/evaluation.txt")
+    data_file = "./dataset/barzanMozafari_binary/labels.csv"
+    truth_file = "./dataset/barzanMozafari_binary/evaluation.csv"
 
-    binary.execute_style(votes, ground_list)
+    tans2csv.trans_wta("./dataset/barzanMozafari_binary/labels.txt", data_file)
+    tans2csv.trans_ground("./dataset/barzanMozafari_binary/evaluation.txt", truth_file)
+
+    caculate.execute(data_file, truth_file)
 
 
-main()
+if __name__=='__main__':
+    main()

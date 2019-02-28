@@ -1,12 +1,15 @@
-import binary
-import initGround
-import initTable
+import caculate
+import tans2csv
 
 def main():
-    votes = initTable.init_twa("./dataset/GLAD_binary/mturklabels.txt")
-    ground_list = initGround.init("./dataset/GLAD_binary/groundtruth.txt")
+    data_file = "./dataset/GLAD_binary/mturklabels.csv"
+    truth_file = "./dataset/GLAD_binary/groundtruth.csv"
 
-    binary.execute(votes, ground_list, style="Exponential")
+    tans2csv.trans_twa("./dataset/GLAD_binary/mturklabels.txt", data_file)
+    tans2csv.trans_ground("./dataset/GLAD_binary/groundtruth.txt", truth_file)
+
+    caculate.execute(data_file, truth_file)
 
 
-main()
+if __name__=='__main__':
+    main()

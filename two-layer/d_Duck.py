@@ -1,13 +1,12 @@
-import binary
-import initGround
-import initTable
-
+import caculate
+import tans2csv
 
 def main():
-    votes = initTable.init_twa("./dataset/d_Duck/answer.csv", gap=",")
-    ground_list = initGround.init("./dataset/d_Duck/truth.csv", gap=",")
+    data_file = "./dataset/d_Duck/answer.csv"
+    truth_file = "./dataset/d_Duck/truth.csv"
 
-    binary.execute_style(votes, ground_list)
+    caculate.execute(data_file, truth_file)
 
 
-main()
+if __name__=='__main__':
+    main()
