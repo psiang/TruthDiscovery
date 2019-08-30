@@ -6,6 +6,7 @@ import copy
 
 # 找到对应分布类型的等价参数
 def random_pr(pr, style):
+    pf = 0
     if style == "Uniform":
         a = 0
         b = pr
@@ -25,6 +26,14 @@ def random_pr(pr, style):
         pf = random.gammavariate(alpha, beta)
         if pf > 1:
             pf = 1
+    elif style == "Normal":
+        mu = pr
+        sigma = 0.3
+        pf = random.gauss(mu, sigma)
+        if pf > 1:
+            pf = 1
+        if pf < 0:
+            pf = 0
     return pf
 
 
@@ -38,13 +47,15 @@ def equal_pr(e, style):
         return math.exp(e) + 1
     elif style == "Gamma":
         return 1 / (math.exp(e) + 1)
+    elif style == "Normal":
+        return 1 / (math.exp(e) + 1)
 
 
 # 执行函数比较不同加噪强度下的单双层MV、TD的错误率偏差
 def execute_style():
     n = 1000000
-    style_list = ['Gamma']
-    e_list = [0.01, 0.001, 0.0]
+    style_list = ['Normal']
+    e_list = [1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.01, 0.001, 0.0]
     for style in style_list:
         print(style)
         for e in e_list:

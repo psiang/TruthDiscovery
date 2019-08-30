@@ -1,7 +1,7 @@
 __author__ = 'JasonLee'
 
 import sys
-import commands
+import subprocess
 import os
 
 sep = ","
@@ -10,7 +10,7 @@ exec_cs = True
 if __name__ == '__main__':
     # if len(sys.argv) != 3:
     #     print "usage: %s %s %s" % (sys.argv[0], "answer_file", "truth_file")
-    answer_filename = sys.argv[1]
+    answer_filename = './answer.csv'
 
     answer_list = []
 
@@ -30,8 +30,8 @@ if __name__ == '__main__':
             f.write(",".join(piece) + "\n")
 
     if exec_cs:
-        commands.getoutput("/bin/rm Results/endpoints.csv")
-        commands.getoutput("mono CommunityBCCSourceCode.exe")
+        subprocess.getstatusoutput("rm Results/endpoints.csv")
+        subprocess.getstatusoutput("CommunityBCCSourceCode.exe")
 
     e2lpd = {}
     with open("Results/endpoints.csv") as f:
@@ -41,4 +41,4 @@ if __name__ == '__main__':
             for i, v in enumerate(parts[1:]):
                 e2lpd[parts[0]][str(i)] = float(v)
 
-    print e2lpd
+    print(e2lpd)

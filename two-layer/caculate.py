@@ -1,5 +1,6 @@
 import ZC
 import LFC
+import LongTerm
 import csv
 import math
 import random
@@ -66,6 +67,14 @@ def random_pr(pr, style):
         pf = random.gammavariate(alpha, beta)
         if pf > 1:
             pf = 1
+    elif style == "Normal":
+        mu = pr
+        sigma = 0.2
+        pf = random.gauss(mu, sigma)
+        if pf > 1:
+            pf = 1
+        if pf < 0:
+            pf = 0
     return pf
 
 
@@ -78,6 +87,8 @@ def equal_pr(e, style):
     elif style == "Exponential":
         return math.exp(e) + 1
     elif style == "Gamma":
+        return 1 / (math.exp(e) + 1)
+    elif style == "Normal":
         return 1 / (math.exp(e) + 1)
 
 
@@ -175,11 +186,11 @@ def gete2wlandw2el(datafile):
 
 def execute(data_file, truth_file):
     e2wl, w2el, label_set = gete2wlandw2el(data_file)
-    e2lpd, wm = LFC.EM(e2wl, w2el, label_set).Run()
+    e2lpd, wm = LongTerm.EM(e2wl, w2el, label_set).Run()
     accuracy = getaccuracy(truth_file, e2lpd)
     print(accuracy)
 
-    n = 10
+    n = 100
     style = 'Uniform'
     e_list_origin = [1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.01, 0.001, 0.0]
 
@@ -206,7 +217,7 @@ def execute(data_file, truth_file):
         acc_onelayer = 0.0
         for i in range(n):
             e2wl_perturb, w2el_perturb = perturb_onelayer(data_file, label_set, pf)
-            e2lpd_perturb, wm_perturb = LFC.EM(e2wl_perturb, w2el_perturb, label_set).Run()
+            e2lpd_perturb, wm_perturb = LongTerm.EM(e2wl_perturb, w2el_perturb, label_set).Run()
             acc_onelayer += getaccuracy(truth_file, e2lpd_perturb)
             del e2wl_perturb
             del w2el_perturb
@@ -219,7 +230,7 @@ def execute(data_file, truth_file):
         acc_twolayer = 0.0
         for i in range(n):
             e2wl_perturb, w2el_perturb = perturb_twolayer(data_file, label_set, pr, style)
-            e2lpd_perturb, wm_perturb = LFC.EM(e2wl_perturb, w2el_perturb, label_set).Run()
+            e2lpd_perturb, wm_perturb = LongTerm.EM(e2wl_perturb, w2el_perturb, label_set).Run()
             acc_twolayer += getaccuracy(truth_file, e2lpd_perturb)
             del e2wl_perturb
             del w2el_perturb

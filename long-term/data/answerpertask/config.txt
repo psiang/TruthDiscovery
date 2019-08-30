@@ -1,0 +1,7 @@
+wn = 150
+for i in range(wn):
+    r = random.gauss(0.6, 0.2 / 2)
+for i in range(len(workers)):
+    if fliper(0.3333333333333333):
+        for j in range(len(truths)):
+            if fliper(x):
